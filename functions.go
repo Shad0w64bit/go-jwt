@@ -10,6 +10,8 @@ import (
 "fmt"
 "hash"
 "strings"
+"time"
+// "github.com/google/uuid"
 
 )
 
@@ -80,7 +82,11 @@ func CreateToken(algo int, secret []byte) (*JwtToken, error) {
 			Algorithm: algo,
 			Type: "JWT",
 		},
-		Payload: JwtPayload{},
+		Payload: JwtPayload{
+//      "jti": uuid.New().String(),
+      "iat": time.Now().Unix(),
+      "exp": time.Now().Unix() + 300,
+    },
 		Secret: secret,
 	}, nil
 }
