@@ -68,11 +68,12 @@ func (h JwtHeader) MarshalJSON() ([]byte, error) {
 func (p *JwtPayload) UnmarshalJSON(data []byte) error {
 	raw := struct {
 		ID uuid.UUID `json:"jti"`
-        CreatedAt int64 `json:"iat"`
-        ExpiredAt int64 `json:"exp"`
-        OID uuid.UUID `json:"oid"`
-        UID uuid.UUID `json:"uid"`
-        Groups string `json:"grp"`
+    CreatedAt int64 `json:"iat"`
+    ExpiredAt int64 `json:"exp"`
+    Audience uuid.UUID `json:"aud"`
+    OID uuid.UUID `json:"oid"`
+    UID uuid.UUID `json:"uid"`
+    Groups string `json:"grp"`
 	}{}
 
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -83,6 +84,7 @@ func (p *JwtPayload) UnmarshalJSON(data []byte) error {
     exp := time.Unix( raw.ExpiredAt, 0 ).Sub(iat)
 
     p.ID = raw.ID
+    p.Audience = raw.Audience
     p.CreatedAt = iat
     p.ExpiredAt = exp
     p.OID = raw.OID
@@ -96,6 +98,7 @@ func (p JwtPayload) MarshalJSON() ([]byte, error) {
         ID uuid.UUID `json:"jti"`
         CreatedAt int64 `json:"iat"`
         ExpiredAt int64 `json:"exp"`
+        Audience uuid.UUID `json:"aud"`
         OID uuid.UUID `json:"oid"`
         UID uuid.UUID `json:"uid"`
         Groups string `json:"grp"`
@@ -103,6 +106,7 @@ func (p JwtPayload) MarshalJSON() ([]byte, error) {
         ID: p.ID,
         CreatedAt: p.CreatedAt.Unix(),
         ExpiredAt: p.CreatedAt.Add( p.ExpiredAt ).Unix(),
+        Audience: p.Audience,
         OID: p.OID,
         UID: p.UID,
         Groups: p.Groups,
