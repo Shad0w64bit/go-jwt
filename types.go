@@ -16,8 +16,9 @@ type JwtPayload struct{
 	ID uuid.UUID `json:"jti"`
 	CreatedAt time.Time `json:"iat"`
 	ExpiredAt time.Duration `json:"exp"`
+	Audience uuid.UUID `json:"aud"`
 
-    UID uuid.UUID `json:"uid"`
+  UID uuid.UUID `json:"uid"`
 	OID uuid.UUID `json:"oid"`
 	Groups string `json:"grp"`
 }
