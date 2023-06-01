@@ -70,7 +70,7 @@ func (p *JwtPayload) UnmarshalJSON(data []byte) error {
 		ID uuid.UUID `json:"jti"`
     CreatedAt int64 `json:"iat"`
     ExpiredAt int64 `json:"exp"`
-    Audience uuid.UUID `json:"aud"`
+    Audience string `json:"aud"`
     Username string `json:"uname"`
     OrgName string `json:"oname"`
     OID uuid.UUID `json:"oid"`
@@ -102,7 +102,7 @@ func (p JwtPayload) MarshalJSON() ([]byte, error) {
         ID uuid.UUID `json:"jti"`
         CreatedAt int64 `json:"iat"`
         ExpiredAt int64 `json:"exp"`
-        Audience uuid.UUID `json:"aud"`
+        Audience string `json:"aud"`
         Username string `json:"uname"`
         OrgName string `json:"oname"`
         OID uuid.UUID `json:"oid"`
