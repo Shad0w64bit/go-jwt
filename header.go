@@ -71,6 +71,8 @@ func (p *JwtPayload) UnmarshalJSON(data []byte) error {
     CreatedAt int64 `json:"iat"`
     ExpiredAt int64 `json:"exp"`
     Audience uuid.UUID `json:"aud"`
+    Username string `json:"uname"`
+    OrgName string `json:"oname"`
     OID uuid.UUID `json:"oid"`
     UID uuid.UUID `json:"uid"`
     Groups string `json:"grp"`
@@ -89,6 +91,8 @@ func (p *JwtPayload) UnmarshalJSON(data []byte) error {
     p.ExpiredAt = exp
     p.OID = raw.OID
 	p.UID = raw.UID
+    p.Username = raw.Username
+    p.OrgName = raw.OrgName
     p.Groups = raw.Groups
 	return nil
 }
@@ -99,6 +103,8 @@ func (p JwtPayload) MarshalJSON() ([]byte, error) {
         CreatedAt int64 `json:"iat"`
         ExpiredAt int64 `json:"exp"`
         Audience uuid.UUID `json:"aud"`
+        Username string `json:"uname"`
+        OrgName string `json:"oname"`
         OID uuid.UUID `json:"oid"`
         UID uuid.UUID `json:"uid"`
         Groups string `json:"grp"`
@@ -107,6 +113,8 @@ func (p JwtPayload) MarshalJSON() ([]byte, error) {
         CreatedAt: p.CreatedAt.Unix(),
         ExpiredAt: p.CreatedAt.Add( p.ExpiredAt ).Unix(),
         Audience: p.Audience,
+        Username: p.Username,
+        OrgName: p.OrgName,
         OID: p.OID,
         UID: p.UID,
         Groups: p.Groups,
