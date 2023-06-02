@@ -25,35 +25,27 @@ func TestConstToken(t *testing.T) {
     token.SetSecret([]byte("qwe1234"))
     token.SetTTL(time.Minute * 5)
 
-    id, err := uuid.Parse("56ba1aaa-9889-4ef2-aa68-586443f9ffec")
-    if err != nil {
-        t.Errorf(err.Error())
-    }
-
-    oid, err := uuid.Parse("cb104e63-e6a1-42f2-89c2-d8057ae108ee")
-    if err != nil {
-        t.Errorf(err.Error())
-    }
-
-    uid, err := uuid.Parse("4d4cd589-2fc4-465e-b5e0-0c8e82f88851")
-    if err != nil {
-        t.Errorf(err.Error())
-    }
-
+    id := uuid.MustParse("56ba1aaa-9889-4ef2-aa68-586443f9ffec")
+    oid := uuid.MustParse("cb104e63-e6a1-42f2-89c2-d8057ae108ee")
+    uid:= uuid.MustParse("4d4cd589-2fc4-465e-b5e0-0c8e82f88851")
 
     // Set Const Data
     token.Payload.ID = id
     token.Payload.CreatedAt = time.Unix(1672628645, 0) // time.Date(2023,1,2,3,4,5,0, time.UTC)
     token.Payload.OID = oid
     token.Payload.UID = uid
+    token.Payload.Audience = uuid.MustParse("e7b39a94-64d6-4659-a8d9-db2453b9a45a")
+    token.Payload.Username = "user1"
+    token.Payload.OrgName = "MyOrg"
     token.Payload.Groups = "62ecaf48-4edc-46aa-97af-81ba76db2d9f:Admins"
 
     strToken, err := token.GenerateToken()
     if err != nil {
         t.Errorf(err.Error())
     }
+    // fmt.Println(strToken)
 
-    const validResult = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1NmJhMWFhYS05ODg5LTRlZjItYWE2OC01ODY0NDNmOWZmZWMiLCJpYXQiOjE2NzI2Mjg2NDUsImV4cCI6MTY3MjYyODk0NSwib2lkIjoiY2IxMDRlNjMtZTZhMS00MmYyLTg5YzItZDgwNTdhZTEwOGVlIiwidWlkIjoiNGQ0Y2Q1ODktMmZjNC00NjVlLWI1ZTAtMGM4ZTgyZjg4ODUxIiwiZ3JwIjoiNjJlY2FmNDgtNGVkYy00NmFhLTk3YWYtODFiYTc2ZGIyZDlmOkFkbWlucyJ9.wF4R4oHyijpbANlMP05r1UgQgxxsSDnjlYaRj4UxzxU"
+    const validResult = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1NmJhMWFhYS05ODg5LTRlZjItYWE2OC01ODY0NDNmOWZmZWMiLCJpYXQiOjE2NzI2Mjg2NDUsImV4cCI6MTY3MjYyODk0NSwiYXVkIjoiZTdiMzlhOTQtNjRkNi00NjU5LWE4ZDktZGIyNDUzYjlhNDVhIiwidW5hbWUiOiJ1c2VyMSIsIm9uYW1lIjoiTXlPcmciLCJvaWQiOiJjYjEwNGU2My1lNmExLTQyZjItODljMi1kODA1N2FlMTA4ZWUiLCJ1aWQiOiI0ZDRjZDU4OS0yZmM0LTQ2NWUtYjVlMC0wYzhlODJmODg4NTEiLCJncnAiOiI2MmVjYWY0OC00ZWRjLTQ2YWEtOTdhZi04MWJhNzZkYjJkOWY6QWRtaW5zIn0.ZWftYAZDa3H5KkG9qYEB_hUqWAjOxCWRnadLylucD8o"
 
     if strToken != validResult {
         t.Error("Generated token is invalid")
